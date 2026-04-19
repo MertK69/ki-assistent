@@ -2,7 +2,7 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: learnsystem-backend-dev
+    container_name: ki-assistent-backend-dev
     restart: unless-stopped
     env_file:
       - ./backend/.env
@@ -16,7 +16,7 @@ services:
 
   frontend:
     image: node:20-alpine
-    container_name: learnsystem-frontend-dev
+    container_name: ki-assistent-frontend-dev
     working_dir: /app
     restart: unless-stopped
     env_file:

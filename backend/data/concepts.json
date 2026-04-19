@@ -1,0 +1,38 @@
+[
+  {
+    "id": "npe",
+    "title": "NullPointerException",
+    "shortDescription": "Ein Objekt ist null, aber eine Methode wird darauf aufgerufen.",
+    "practicalTip": "Vor Methodenzugriffen Null-Checks einbauen oder sichere Defaults setzen."
+  },
+  {
+    "id": "loops",
+    "title": "Schleifen",
+    "shortDescription": "Wiederholen Code, bis eine Abbruchbedingung erreicht wird.",
+    "practicalTip": "Immer prüfen, ob Start, Ende und Schrittweite zusammenpassen."
+  },
+  {
+    "id": "conditions",
+    "title": "Bedingungen",
+    "shortDescription": "if/else steuert, welcher Codepfad ausgeführt wird.",
+    "practicalTip": "Grenzfälle explizit testen, nicht nur den Happy Path."
+  },
+  {
+    "id": "scope",
+    "title": "Variablen-Scope",
+    "shortDescription": "Bestimmt, wo eine Variable sichtbar und veränderbar ist.",
+    "practicalTip": "Kleine Scopes bevorzugen, um Nebeneffekte zu vermeiden."
+  },
+  {
+    "id": "methods",
+    "title": "Methodenaufrufe",
+    "shortDescription": "Methoden kapseln Logik und benötigen korrekte Parameter.",
+    "practicalTip": "Signatur lesen und Rückgabewert immer validieren."
+  },
+  {
+    "id": "arrays",
+    "title": "Listen / Arrays",
+    "shortDescription": "Speichern mehrere Werte unter Indizes.",
+    "practicalTip": "Indexzugriffe immer gegen Länge absichern."
+  }
+]

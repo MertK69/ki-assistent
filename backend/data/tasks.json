@@ -1,0 +1,32 @@
+[
+  {
+    "id": "task-1",
+    "title": "Null-sicherer Namensdruck",
+    "difficulty": "leicht",
+    "language": "java",
+    "conceptTags": ["NullPointerException", "Bedingungen"],
+    "prompt": "Passe den Code so an, dass kein Laufzeitfehler entsteht und ein sinnvoller Fallback ausgegeben wird.",
+    "starterCode": "String studentName = null;\nSystem.out.println(studentName.toUpperCase());",
+    "successCriteria": "Programm läuft ohne Exception und behandelt null sauber."
+  },
+  {
+    "id": "task-2",
+    "title": "Sichere Schleifengrenzen",
+    "difficulty": "mittel",
+    "language": "python",
+    "conceptTags": ["Schleifen", "Listen / Arrays"],
+    "prompt": "Repariere die Schleife so, dass alle Elemente ausgegeben werden, aber kein IndexError entsteht.",
+    "starterCode": "scores = [12, 15, 19]\nfor i in range(len(scores) + 1):\n    print(scores[i])",
+    "successCriteria": "Alle Werte werden ausgegeben, kein out-of-range Zugriff."
+  },
+  {
+    "id": "task-3",
+    "title": "Scope bei Callbacks",
+    "difficulty": "fortgeschritten",
+    "language": "javascript",
+    "conceptTags": ["Variablen-Scope", "Methodenaufrufe"],
+    "prompt": "Sorge dafür, dass jeder Callback den erwarteten Schleifenwert ausgibt.",
+    "starterCode": "const callbacks = [];\nfor (var i = 0; i < 3; i++) {\n  callbacks.push(() => console.log(i));\n}",
+    "successCriteria": "Die Ausgabe zeigt 0, 1 und 2 statt dreimal denselben Wert."
+  }
+]

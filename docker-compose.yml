@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: learnsystem-backend-1
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    ports:
+      - "127.0.0.1:8010:8000"
+    networks:
+      - web
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_FASTAPI_URL: ${NEXT_PUBLIC_FASTAPI_URL}
+    container_name: learnsystem-frontend-1
+    restart: unless-stopped
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "127.0.0.1:3010:3000"
+    depends_on:
+      - backend
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge

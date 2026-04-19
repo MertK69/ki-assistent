@@ -1,0 +1,188 @@
+{
+  "fallback": {
+    "detectedIssue": "Die Eingabe zeigt ein typisches Einsteigerproblem mit Kontrollfluss und Wertevalidierung.",
+    "explanationSimple": "Es sieht so aus, als ob an mindestens einer Stelle ein Wert anders ist als erwartet. Dadurch bricht der Ablauf ab oder liefert ein falsches Ergebnis.",
+    "likelyConcepts": ["Bedingungen", "Schleifen", "Variablen-Scope"],
+    "reflectionQuestions": [
+      "Welche Variable hat kurz vor dem Fehler einen unerwarteten Wert?",
+      "An welcher Stelle im Ablauf ändert sich der Zustand?",
+      "Welcher kleine Testfall zeigt das Problem am schnellsten?"
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "title": "Hinweis 1 - Verhalten beobachten",
+        "content": "Füge gezielte Ausgaben vor der Problemstelle ein und prüfe, ob alle Werte plausibel sind."
+      },
+      {
+        "level": 2,
+        "title": "Hinweis 2 - Ursache eingrenzen",
+        "content": "Überprüfe die Bedingung, die den kritischen Zweig auslöst. Oft liegt der Fehler in einem Grenzfall."
+      },
+      {
+        "level": 3,
+        "title": "Hinweis 3 - Fast konkrete Richtung",
+        "content": "Baue vor dem Zugriff einen Guard ein und passe die Schleifen- oder Bedingungslogik so an, dass der Grenzfall abgedeckt ist."
+      }
+    ],
+    "confidenceLevel": "medium",
+    "hallucinationWarning": true,
+    "relevanceNote": "Das Problem ist relevant, weil ähnliche Fehler in fast allen Programmiersprachen auftreten.",
+    "conceptFocus": "Defensive Programmierung und sauberes Debugging"
+  },
+  "java_null_pointer": {
+    "detectedIssue": "NullPointerException: Es wird eine Methode auf einer null-Referenz aufgerufen.",
+    "explanationSimple": "Die Variable `studentName` ist aktuell leer (null). Auf einer leeren Referenz kann `toUpperCase()` nicht ausgeführt werden.",
+    "likelyConcepts": ["NullPointerException", "Bedingungen", "Methodenaufrufe"],
+    "reflectionQuestions": [
+      "Woher kommt der Wert von `studentName`?",
+      "Welche Stelle sollte prüfen, ob der Wert null ist?",
+      "Wie kannst du für den null-Fall eine sinnvolle Ausgabe definieren?"
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "title": "Hinweis 1 - Ursache sichtbar machen",
+        "content": "Logge den Wert vor dem Methodenaufruf. Wenn `null` erscheint, ist der Zugriff unsicher."
+      },
+      {
+        "level": 2,
+        "title": "Hinweis 2 - Schutzbedingung",
+        "content": "Füge vor `toUpperCase()` eine Bedingung ein, die den null-Fall abfängt."
+      },
+      {
+        "level": 3,
+        "title": "Hinweis 3 - Fast Lösungsweg",
+        "content": "Nutze einen Guard: Wenn null, gib z. B. `'Unbekannt'` aus. Sonst rufe `toUpperCase()` auf."
+      }
+    ],
+    "confidenceLevel": "high",
+    "hallucinationWarning": false,
+    "relevanceNote": "Null-Sicherheit ist ein Kernprinzip für robuste Java-Programme.",
+    "conceptFocus": "Defensive Checks vor Methodenaufrufen"
+  },
+  "python_index": {
+    "detectedIssue": "IndexError: Die Schleife greift auf einen Index außerhalb der Liste zu.",
+    "explanationSimple": "Die Liste hat 3 Elemente, aber `range(len(scores) + 1)` erzeugt 4 Indizes. Der letzte Zugriff ist ungültig.",
+    "likelyConcepts": ["Schleifen", "Listen / Arrays", "Bedingungen"],
+    "reflectionQuestions": [
+      "Welche Indizes sind bei einer Liste mit 3 Elementen erlaubt?",
+      "Warum erzeugt `+ 1` hier einen zusätzlichen Durchlauf?",
+      "Wie könnte man die Schleife so schreiben, dass Grenzfälle sicher sind?"
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "title": "Hinweis 1 - Grenzen prüfen",
+        "content": "Vergleiche die längste erzeugte Zahl aus `range(...)` mit dem letzten gültigen Listenindex."
+      },
+      {
+        "level": 2,
+        "title": "Hinweis 2 - Schleife vereinfachen",
+        "content": "Iteriere direkt über die Listenelemente statt über Indizes, wenn du den Index nicht brauchst."
+      },
+      {
+        "level": 3,
+        "title": "Hinweis 3 - Fast Lösungsweg",
+        "content": "Entferne `+ 1` oder stelle auf `for score in scores` um."
+      }
+    ],
+    "confidenceLevel": "high",
+    "hallucinationWarning": false,
+    "relevanceNote": "Off-by-one-Fehler sind einer der häufigsten Bugs in der Programmierausbildung.",
+    "conceptFocus": "Indexgrenzen und Iterationsmuster"
+  },
+  "python_division_by_zero": {
+    "detectedIssue": "ZeroDivisionError: Division durch 0 ist nicht erlaubt.",
+    "explanationSimple": "In Python darf nicht durch 0 geteilt werden. Das führt zur Laufzeit direkt zu einem Abbruch.",
+    "likelyConcepts": ["Bedingungen", "Variablen-Scope", "Methodenaufrufe"],
+    "reflectionQuestions": [
+      "Welche Variable sollte als Divisor dienen?",
+      "Kann der Divisor in Randfällen 0 sein?",
+      "Wo solltest du vor der Division einen Guard einbauen?"
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "title": "Hinweis 1 - Divisor identifizieren",
+        "content": "Prüfe, welcher Wert rechts vom `/` steht und ob er dynamisch ist."
+      },
+      {
+        "level": 2,
+        "title": "Hinweis 2 - Vorbedingung",
+        "content": "Führe die Division nur aus, wenn der Divisor größer als 0 ist."
+      },
+      {
+        "level": 3,
+        "title": "Hinweis 3 - Fast Lösungsweg",
+        "content": "Nutze typischerweise `len(numbers)` als Divisor und behandle den leeren Listenfall separat."
+      }
+    ],
+    "confidenceLevel": "high",
+    "hallucinationWarning": false,
+    "relevanceNote": "Divisionen sind häufige Fehlerquellen, besonders bei leeren Datenmengen.",
+    "conceptFocus": "Defensive Guards vor kritischen Operationen"
+  },
+  "js_scope": {
+    "detectedIssue": "Scope-Problem: `var` teilt sich eine Schleifenvariable über alle Callbacks.",
+    "explanationSimple": "Alle Funktionen greifen später auf denselben Wert von `i` zu, nicht auf den Wert pro Iteration.",
+    "likelyConcepts": ["Variablen-Scope", "Schleifen", "Methodenaufrufe"],
+    "reflectionQuestions": [
+      "Wann wird der Callback ausgeführt: während oder nach der Schleife?",
+      "Welche Unterschiede gibt es zwischen `var` und `let` im Scope?",
+      "Wie könntest du den Iterationswert pro Callback einfrieren?"
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "title": "Hinweis 1 - Ausführungszeitpunkt",
+        "content": "Prüfe zuerst, wann die Funktion den Wert von `i` wirklich liest."
+      },
+      {
+        "level": 2,
+        "title": "Hinweis 2 - Scope-Ebene",
+        "content": "Nutze eine Variable mit Block-Scope innerhalb der Schleife."
+      },
+      {
+        "level": 3,
+        "title": "Hinweis 3 - Fast Lösungsweg",
+        "content": "Ersetze `var` durch `let` oder nutze eine Funktion, die den aktuellen Wert als Parameter annimmt."
+      }
+    ],
+    "confidenceLevel": "medium",
+    "hallucinationWarning": true,
+    "relevanceNote": "Scope-Verständnis ist zentral für asynchrones und callback-basiertes JavaScript.",
+    "conceptFocus": "Block-Scope und Closures"
+  },
+  "no_clear_issue": {
+    "detectedIssue": null,
+    "explanationSimple": "Der gezeigte Code wirkt plausibel. Es gibt aktuell kein klares Fehlersignal aus dem Snippet allein.",
+    "likelyConcepts": ["Debugging", "Tests", "Bedingungen"],
+    "reflectionQuestions": [
+      "Welches erwartete Ergebnis hast du konkret?",
+      "Gibt es einen Randfall, in dem die Logik trotzdem kippt?",
+      "Welche kleine Testeingabe könnte die Annahme prüfen?"
+    ],
+    "hints": [
+      {
+        "level": 1,
+        "title": "Hinweis 1 - Erwartung festhalten",
+        "content": "Schreibe zuerst auf, welches Ergebnis du erwartest, bevor du weiter veränderst."
+      },
+      {
+        "level": 2,
+        "title": "Hinweis 2 - Mini-Tests",
+        "content": "Teste mit sehr kleinen Eingaben (leer, 1 Element, Grenzwerte)."
+      },
+      {
+        "level": 3,
+        "title": "Hinweis 3 - Nächster Debug-Schritt",
+        "content": "Füge gezielte Assertions oder Prints an kritischen Stellen ein, um Annahmen zu validieren."
+      }
+    ],
+    "confidenceLevel": "medium",
+    "hallucinationWarning": true,
+    "relevanceNote": "Auch ohne sichtbaren Bug hilft systematisches Testen beim sicheren Lernen.",
+    "conceptFocus": "Hypothesenbasiertes Debugging"
+  }
+}

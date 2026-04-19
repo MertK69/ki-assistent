@@ -1,0 +1,23 @@
+[
+  {
+    "id": "java-npe",
+    "title": "Java: NullPointerException verstehen",
+    "language": "java",
+    "errorMessage": "Exception in thread \"main\" java.lang.NullPointerException",
+    "code": "public class StudentPrinter {\n  public static void main(String[] args) {\n    String studentName = null;\n    System.out.println(studentName.toUpperCase());\n  }\n}"
+  },
+  {
+    "id": "python-index",
+    "title": "Python: IndexError bei Listen",
+    "language": "python",
+    "errorMessage": "IndexError: list index out of range",
+    "code": "scores = [12, 15, 19]\nfor i in range(len(scores) + 1):\n    print(\"Score:\", scores[i])"
+  },
+  {
+    "id": "js-scope",
+    "title": "JavaScript: Scope in Schleifen",
+    "language": "javascript",
+    "errorMessage": "Unexpected output caused by shared loop variable",
+    "code": "const callbacks = [];\n\nfor (var i = 0; i < 3; i++) {\n  callbacks.push(() => console.log(i));\n}\n\ncallbacks[0]();\ncallbacks[1]();\ncallbacks[2]();"
+  }
+]

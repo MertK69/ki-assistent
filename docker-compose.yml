@@ -12,6 +12,8 @@ services:
     image: ghcr.io/mertk69/ki-assistent-frontend:latest
     container_name: ki-assistent-frontend-1
     restart: always
+    environment:
+      FASTAPI_URL: http://backend:8000
     ports:
       - "8092:3000"  # Intern 3000 (Next.js), Extern 8092
     depends_on:

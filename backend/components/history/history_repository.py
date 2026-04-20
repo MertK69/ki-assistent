@@ -1,7 +1,5 @@
 from core.supabase import get_supabase_client
-from .history_classes import HistoryEntry
 from typing import Any
-import uuid
 
 
 async def insert_history_entry(

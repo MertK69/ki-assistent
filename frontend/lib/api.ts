@@ -64,8 +64,6 @@ export async function getLlmProviderStatus(): Promise<{
   ollama_online: boolean;
 }> {
   return apiFetch('/api/profile/provider-status');
-  // Nutze die bestehende apiFetch-Hilfsfunktion exakt wie
-  // sie bereits in dieser Datei verwendet wird
 }
 
 export async function updateLlmProvider(
@@ -95,12 +93,10 @@ export async function updateLlmProvider(
       llm_provider: provider,
     }),
   });
-  // Nutze PUT /api/profile – das Profil-Update existiert bereits
 }
 
 export async function getHistory(limit = 20, offset = 0) {
   return apiFetch(`/api/history?limit=${limit}&offset=${offset}`);
-  // Nutze apiFetch exakt wie bereits in dieser Datei verwendet
 }
 
 export async function deleteHistoryEntry(entryId: string): Promise<void> {

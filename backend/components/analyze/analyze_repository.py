@@ -40,8 +40,7 @@ FALLBACK_ANALYSIS = build_analysis(analyses["fallback"])
 async def call_llm(system_prompt: str, user_prompt: str) -> Optional[str]:
     """Call LLM API and return raw JSON content string, or None on failure."""
     if not settings.llm_configured:
-        logger.warning("LLM not configured: OPENAI_ENABLED=%s, key_set=%s",
-                       settings.OPENAI_ENABLED, bool(settings.OPENAI_API_KEY.strip()))
+        print(f"[LLM] not configured: OPENAI_ENABLED={settings.OPENAI_ENABLED} key_set={bool(settings.OPENAI_API_KEY.strip())}", flush=True)
         return None
     base_url = settings.OPENAI_BASE_URL.rstrip("/")
     try:
@@ -63,12 +62,12 @@ async def call_llm(system_prompt: str, user_prompt: str) -> Optional[str]:
                 },
             )
         if not response.is_success:
-            logger.error("LLM API %s: %s", response.status_code, response.text[:500])
+            print(f"[LLM] API {response.status_code}: {response.text[:500]}", flush=True)
             return None
         data = response.json()
         content = data.get("choices", [{}])[0].get("message", {}).get("content")
-        logger.info("LLM OK model=%s content_len=%s", settings.OPENAI_MODEL, len(content or ""))
+        print(f"[LLM] OK model={settings.OPENAI_MODEL} content_len={len(content or '')}", flush=True)
         return content
     except Exception as e:
-        logger.exception("LLM call failed: %s", e)
+        print(f"[LLM] call failed: {type(e).__name__}: {e}", flush=True)
         return None

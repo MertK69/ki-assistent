@@ -90,12 +90,12 @@ async def analyze_didactically(
     user_prompt = _build_user_prompt(payload, profile)
     raw_content = await call_llm(DIDACTIC_SYSTEM_PROMPT, user_prompt)
     if not isinstance(raw_content, str):
-        logger.warning("LLM returned no content — falling back to mock")
+        print("[LLM] no content — falling back to mock", flush=True)
         return None
     try:
         return AnalysisResult.model_validate(json.loads(raw_content))
     except Exception as e:
-        logger.exception("LLM response parse failed: %s | raw=%s", e, raw_content[:500])
+        print(f"[LLM] parse failed: {type(e).__name__}: {e} | raw={raw_content[:500]}", flush=True)
         return None
 
 

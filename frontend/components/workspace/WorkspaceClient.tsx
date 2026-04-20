@@ -181,7 +181,7 @@ export function WorkspaceClient({
                 height="420px"
                 language={monacoLang(language)}
                 value={code}
-                onChange={(val) => { setCode(val ?? ""); setAnalysis(null); }}
+                onChange={(val) => { setCode(val ?? ""); setAnalysis(null); setErrorMessage(""); }}
                 options={{
                   minimap: { enabled: false },
                   fontSize: 14,

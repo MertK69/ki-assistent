@@ -32,7 +32,7 @@ const difficultyColor: Record<string, string> = {
 };
 
 export default async function TasksPage() {
-  const tasks = (await getTasks()) as Task[];
+  const tasks = (await getTasks()) as unknown as Task[];
 
   const grouped = Object.keys(LANGUAGE_LABELS).map((lang) => ({
     language: lang,

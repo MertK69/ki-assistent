@@ -19,11 +19,12 @@ export default async function WorkspacePage({
   const token = cookieStore.get("sb-access-token")?.value ?? "";
   const { task: taskId } = await searchParams;
 
-  const [snippets, profile, tasks] = await Promise.all([
+  const [snippets, profile, tasksRaw] = await Promise.all([
     getSnippets(),
     token ? getProfile(token) : null,
-    taskId ? (getTasks() as Promise<Task[]>) : Promise.resolve([] as Task[]),
+    taskId ? getTasks() : Promise.resolve([]),
   ]);
+  const tasks = tasksRaw as unknown as Task[];
 
   const selectedTask = taskId ? tasks.find((t) => t.id === taskId) : undefined;
   const initialLanguage = selectedTask?.language ?? (profile as any)?.target_language ?? "java";

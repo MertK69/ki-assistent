@@ -57,15 +57,18 @@ const CONFIDENCE_VALUE = { low: 35, medium: 65, high: 90 };
 export function WorkspaceClient({
   snippets,
   initialLanguage = "java",
+  initialCode,
 }: {
   snippets: Snippet[];
   initialLanguage?: string;
+  initialCode?: string;
 }) {
   const defaultSnippet = snippets.find((s) => s.language === initialLanguage) ?? snippets[0];
+  const hasInitialTask = typeof initialCode === "string" && initialCode.length > 0;
 
   const [language, setLanguage] = useState(defaultSnippet?.language ?? "java");
-  const [code, setCode] = useState(defaultSnippet?.code ?? "");
-  const [errorMessage, setErrorMessage] = useState(defaultSnippet?.errorMessage ?? "");
+  const [code, setCode] = useState(hasInitialTask ? initialCode! : (defaultSnippet?.code ?? ""));
+  const [errorMessage, setErrorMessage] = useState(hasInitialTask ? "" : (defaultSnippet?.errorMessage ?? ""));
   const [safeLearningMode, setSafeLearningMode] = useState(true);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);

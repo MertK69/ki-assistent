@@ -1,12 +1,9 @@
 import json
-import logging
 from pathlib import Path
 from typing import Optional
 import httpx
 from components.analyze.analyze_classes import AnalysisResult, Hint
 from config import settings
-
-logger = logging.getLogger("analyze.llm")
 
 _data_dir = Path(__file__).parent.parent.parent / "data"
 
@@ -65,9 +62,7 @@ async def call_llm(system_prompt: str, user_prompt: str) -> Optional[str]:
             print(f"[LLM] API {response.status_code}: {response.text[:500]}", flush=True)
             return None
         data = response.json()
-        content = data.get("choices", [{}])[0].get("message", {}).get("content")
-        print(f"[LLM] OK model={settings.OPENAI_MODEL} content_len={len(content or '')}", flush=True)
-        return content
+        return data.get("choices", [{}])[0].get("message", {}).get("content")
     except Exception as e:
         print(f"[LLM] call failed: {type(e).__name__}: {e}", flush=True)
         return None

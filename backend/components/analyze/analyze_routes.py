@@ -24,14 +24,10 @@ async def analyze(request: Request, body: AnalyzeRequest):
 
     llm_result = await analyze_didactically(body, profile)
     if llm_result and not _looks_language_inconsistent(body.language, llm_result):
-        print(f"[ANALYZE] llm_result used | lang={body.language} issue={llm_result.detectedIssue[:80]!r}", flush=True)
         return {"result": llm_result}
 
     if llm_result:
-        print(f"[ANALYZE] llm_result REJECTED (language inconsistent) | lang={body.language} issue={llm_result.detectedIssue[:80]!r}", flush=True)
-    else:
-        print(f"[ANALYZE] llm returned None — using mock | lang={body.language}", flush=True)
+        print(f"[ANALYZE] llm_result rejected (language inconsistent) | lang={body.language}", flush=True)
 
     mock_result = await run_mock_analysis(body)
-    print(f"[ANALYZE] mock result | issue={mock_result.detectedIssue[:80]!r}", flush=True)
     return {"result": mock_result}

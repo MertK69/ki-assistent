@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import logging
 from typing import Optional
 from components.analyze.analyze_classes import AnalysisResult, AnalyzeRequest
 from components.profile.profile_classes import QualificationProfile
@@ -11,8 +10,6 @@ from components.analyze.analyze_repository import (
     analyses,
     FALLBACK_ANALYSIS,
 )
-
-logger = logging.getLogger("analyze.llm")
 
 DIDACTIC_SYSTEM_PROMPT = """
 Du bist ein didaktischer Coding-Assistent für Einsteiger.
@@ -90,7 +87,6 @@ async def analyze_didactically(
     user_prompt = _build_user_prompt(payload, profile)
     raw_content = await call_llm(DIDACTIC_SYSTEM_PROMPT, user_prompt)
     if not isinstance(raw_content, str):
-        print("[LLM] no content — falling back to mock", flush=True)
         return None
     try:
         return AnalysisResult.model_validate(json.loads(raw_content))

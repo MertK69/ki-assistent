@@ -1,32 +1,92 @@
 [
   {
-    "id": "task-1",
+    "id": "java-easy",
     "title": "Null-sicherer Namensdruck",
     "difficulty": "leicht",
     "language": "java",
     "conceptTags": ["NullPointerException", "Bedingungen"],
     "prompt": "Passe den Code so an, dass kein Laufzeitfehler entsteht und ein sinnvoller Fallback ausgegeben wird.",
-    "starterCode": "String studentName = null;\nSystem.out.println(studentName.toUpperCase());",
+    "starterCode": "public class StudentPrinter {\n  public static void main(String[] args) {\n    String studentName = null;\n    System.out.println(studentName.toUpperCase());\n  }\n}",
     "successCriteria": "Programm läuft ohne Exception und behandelt null sauber."
   },
   {
-    "id": "task-2",
+    "id": "java-medium",
+    "title": "Division ohne Absturz",
+    "difficulty": "mittel",
+    "language": "java",
+    "conceptTags": ["ArithmeticException", "Eingabevalidierung"],
+    "prompt": "Der Code teilt durch einen Nenner, der 0 sein kann. Behandle diesen Fall robust, ohne die Methode komplett umzubauen.",
+    "starterCode": "public class Average {\n  public static double averageOf(int[] values) {\n    int sum = 0;\n    for (int v : values) sum += v;\n    return sum / values.length;\n  }\n\n  public static void main(String[] args) {\n    System.out.println(averageOf(new int[]{}));\n  }\n}",
+    "successCriteria": "Leeres Array führt zu keinem Absturz; Verhalten ist dokumentiert oder erkennbar."
+  },
+  {
+    "id": "java-hard",
+    "title": "Off-by-One beim Kopieren",
+    "difficulty": "fortgeschritten",
+    "language": "java",
+    "conceptTags": ["ArrayIndexOutOfBoundsException", "Schleifen", "Arrays"],
+    "prompt": "Das Programm soll das Array elementweise in ein Zielarray gleicher Länge kopieren, wirft aber einen Index-Fehler. Finde und behebe den Fehler.",
+    "starterCode": "public class Copier {\n  public static void main(String[] args) {\n    int[] src = {3, 7, 11, 42};\n    int[] dst = new int[src.length];\n    for (int i = 1; i <= src.length; i++) {\n      dst[i] = src[i];\n    }\n    for (int v : dst) System.out.println(v);\n  }\n}",
+    "successCriteria": "Zielarray enthält dieselben Werte wie das Quellarray, kein IndexOutOfBounds."
+  },
+  {
+    "id": "python-easy",
+    "title": "String und Zahl kombinieren",
+    "difficulty": "leicht",
+    "language": "python",
+    "conceptTags": ["TypeError", "Typkonvertierung"],
+    "prompt": "Der Code wirft einen TypeError, weil ein String mit einer Zahl verknüpft wird. Sorge für eine saubere Ausgabe wie `Alter: 25`.",
+    "starterCode": "age = 25\nmessage = \"Alter: \" + age\nprint(message)",
+    "successCriteria": "Ausgabe enthält Alter und Zahl, kein TypeError."
+  },
+  {
+    "id": "python-medium",
     "title": "Sichere Schleifengrenzen",
     "difficulty": "mittel",
     "language": "python",
-    "conceptTags": ["Schleifen", "Listen / Arrays"],
+    "conceptTags": ["Schleifen", "Listen / Arrays", "IndexError"],
     "prompt": "Repariere die Schleife so, dass alle Elemente ausgegeben werden, aber kein IndexError entsteht.",
     "starterCode": "scores = [12, 15, 19]\nfor i in range(len(scores) + 1):\n    print(scores[i])",
     "successCriteria": "Alle Werte werden ausgegeben, kein out-of-range Zugriff."
   },
   {
-    "id": "task-3",
+    "id": "python-hard",
+    "title": "Tückisches Default-Argument",
+    "difficulty": "fortgeschritten",
+    "language": "python",
+    "conceptTags": ["Mutable Defaults", "Funktionsparameter", "Referenzen"],
+    "prompt": "Jeder Aufruf von `add_item` soll mit einer frischen Liste starten. Aktuell sammeln sich die Einträge aber über Aufrufe hinweg an — finde den subtilen Bug.",
+    "starterCode": "def add_item(item, bucket=[]):\n    bucket.append(item)\n    return bucket\n\nprint(add_item(\"Apfel\"))\nprint(add_item(\"Birne\"))\nprint(add_item(\"Kirsche\"))",
+    "successCriteria": "Jeder Aufruf gibt eine Liste mit genau einem Element zurück."
+  },
+  {
+    "id": "js-easy",
+    "title": "Strikter Vergleich",
+    "difficulty": "leicht",
+    "language": "javascript",
+    "conceptTags": ["Type Coercion", "Gleichheit"],
+    "prompt": "Der Vergleich liefert `true`, obwohl Zahl und String unterschiedliche Typen sind. Sorge dafür, dass der Vergleich typsicher ist.",
+    "starterCode": "const input = \"0\";\nif (input == false) {\n  console.log(\"Eingabe ist leer oder 0\");\n} else {\n  console.log(\"Eingabe vorhanden\");\n}",
+    "successCriteria": "Der String `\"0\"` wird als vorhandene Eingabe erkannt."
+  },
+  {
+    "id": "js-medium",
+    "title": "Fehlendes await",
+    "difficulty": "mittel",
+    "language": "javascript",
+    "conceptTags": ["async/await", "Promises"],
+    "prompt": "Die Funktion gibt `undefined` bzw. ein Promise-Objekt zurück statt des echten Werts. Finde den Grund und behebe ihn.",
+    "starterCode": "async function fetchNumber() {\n  return new Promise((resolve) => setTimeout(() => resolve(42), 50));\n}\n\nfunction printNumber() {\n  const n = fetchNumber();\n  console.log(\"Zahl:\", n);\n}\n\nprintNumber();",
+    "successCriteria": "Konsolenausgabe ist `Zahl: 42`, nicht `Zahl: [Promise]` oder `undefined`."
+  },
+  {
+    "id": "js-hard",
     "title": "Scope bei Callbacks",
     "difficulty": "fortgeschritten",
     "language": "javascript",
-    "conceptTags": ["Variablen-Scope", "Methodenaufrufe"],
+    "conceptTags": ["Variablen-Scope", "Closures", "Methodenaufrufe"],
     "prompt": "Sorge dafür, dass jeder Callback den erwarteten Schleifenwert ausgibt.",
-    "starterCode": "const callbacks = [];\nfor (var i = 0; i < 3; i++) {\n  callbacks.push(() => console.log(i));\n}",
+    "starterCode": "const callbacks = [];\nfor (var i = 0; i < 3; i++) {\n  callbacks.push(() => console.log(i));\n}\ncallbacks.forEach((cb) => cb());",
     "successCriteria": "Die Ausgabe zeigt 0, 1 und 2 statt dreimal denselben Wert."
   }
 ]

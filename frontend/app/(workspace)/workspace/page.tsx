@@ -1,17 +1,32 @@
 import { cookies } from "next/headers";
 import { WorkspaceClient } from "@/components/workspace/WorkspaceClient";
-import { getCurrentUser, getProfile, getSnippets } from "@/lib/api";
+import { getProfile, getSnippets, getTasks } from "@/lib/api";
 
-export default async function WorkspacePage() {
+interface Task {
+  id: string;
+  title: string;
+  language: string;
+  prompt: string;
+  starterCode: string;
+}
+
+export default async function WorkspacePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ task?: string }>;
+}) {
   const cookieStore = await cookies();
   const token = cookieStore.get("sb-access-token")?.value ?? "";
+  const { task: taskId } = await searchParams;
 
-  const [snippets, profile] = await Promise.all([
+  const [snippets, profile, tasks] = await Promise.all([
     getSnippets(),
     token ? getProfile(token) : null,
+    taskId ? (getTasks() as Promise<Task[]>) : Promise.resolve([] as Task[]),
   ]);
 
-  const initialLanguage = (profile as any)?.target_language ?? "java";
+  const selectedTask = taskId ? tasks.find((t) => t.id === taskId) : undefined;
+  const initialLanguage = selectedTask?.language ?? (profile as any)?.target_language ?? "java";
 
   return (
     <div className="flex flex-1 flex-col">
@@ -27,8 +42,19 @@ export default async function WorkspacePage() {
           Modellgestützte Heuristik
         </span>
       </header>
+      {selectedTask ? (
+        <div className="border-b bg-muted/30 px-4 py-3 sm:px-6">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">Aktuelle Aufgabe</p>
+          <p className="mt-1 text-sm font-medium">{selectedTask.title}</p>
+          <p className="text-sm text-muted-foreground">{selectedTask.prompt}</p>
+        </div>
+      ) : null}
       <main className="flex-1 p-4 sm:p-6">
-        <WorkspaceClient snippets={snippets} initialLanguage={initialLanguage} />
+        <WorkspaceClient
+          snippets={snippets}
+          initialLanguage={initialLanguage}
+          initialCode={selectedTask?.starterCode}
+        />
       </main>
     </div>
   );

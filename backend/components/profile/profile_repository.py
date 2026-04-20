@@ -30,6 +30,7 @@ async def get_learner_profile(user_id: str, token: str) -> Optional[Qualificatio
             goal_tags=row.get("goal_tags", []),
             goals_free_text=row.get("goals_free_text") or "",
             onboarding_completed=row.get("onboarding_completed", False),
+            llm_provider=row.get("llm_provider", "openai"),
             updated_at=row.get("updated_at", ""),
         )
     except Exception:
@@ -50,6 +51,7 @@ async def upsert_learner_profile(user_id: str, data: ProfileUpsertRequest, token
         "goal_tags": data.goal_tags,
         "goals_free_text": data.goals_free_text.strip() or None,
         "onboarding_completed": data.onboarding_completed,
+        "llm_provider": data.llm_provider or "openai",
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
     client.table("learner_profiles").upsert(payload, on_conflict="id").execute()

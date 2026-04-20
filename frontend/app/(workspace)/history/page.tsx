@@ -1,39 +1,77 @@
-export default function HistoryPage() {
-  // History persistence requires a future /api/history endpoint
-  const entries = [
-    { id: "1", language: "Java", title: "NullPointerException in StudentPrinter", summary: "Ursache isoliert: Aufruf auf null-Referenz.", confidence: "high", createdAt: "Heute, 10:24" },
-    { id: "2", language: "Python", title: "IndexError in Notenliste", summary: "Schleifenende war um +1 verschoben.", confidence: "medium", createdAt: "Gestern, 19:11" },
-  ];
+import { ClearHistoryButton } from "@/components/history/ClearHistoryButton";
+import { DeleteEntryButton } from "@/components/history/DeleteEntryButton";
+import { HistoryPagination } from "@/components/history/HistoryPagination";
+import { getHistory } from "@/lib/api";
 
-  const confidenceColor: Record<string, string> = {
-    high: "bg-emerald-100 text-emerald-800",
-    medium: "bg-amber-100 text-amber-800",
-    low: "bg-red-100 text-red-800",
+export default async function HistoryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ offset?: string }>;
+}) {
+  const { offset: offsetParam } = await searchParams;
+  const offset = Number(offsetParam ?? "0");
+  const history = (await getHistory(20, Number.isNaN(offset) ? 0 : offset)) as {
+    entries: Array<{
+      id: string;
+      language: string;
+      code_snippet: string;
+      provider: string;
+      created_at: string;
+      analysis_result?: Record<string, unknown>;
+    }>;
+    total: number;
   };
 
   return (
-    <div className="flex flex-1 flex-col">
-      <header className="border-b bg-background/80 px-4 py-4 backdrop-blur sm:px-6">
-        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Verstehen statt Kopieren</p>
-        <h1 className="text-xl font-semibold tracking-tight">Lernverlauf</h1>
-        <p className="text-sm text-muted-foreground">Deine bisherigen Analysesessions im Überblick.</p>
-      </header>
-      <main className="flex-1 p-4 sm:p-6">
-        <div className="space-y-3">
-          {entries.map((entry) => (
-            <div key={entry.id} className="flex items-start justify-between rounded-2xl border bg-card p-5">
-              <div>
-                <p className="font-medium">{entry.title}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{entry.summary}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{entry.createdAt} · {entry.language}</p>
-              </div>
-              <span className={`ml-4 flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${confidenceColor[entry.confidence] ?? "bg-muted"}`}>
-                {entry.confidence}
-              </span>
-            </div>
-          ))}
+    <div className="flex flex-1 flex-col p-4 sm:p-6">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">Verlauf</h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Deine letzten Code-Analysen
+            </p>
+          </div>
+          {history.total > 0 && <ClearHistoryButton />}
         </div>
-      </main>
+
+        {history.total === 0 ? (
+          <div className="text-center py-16 text-gray-400">
+            <p className="text-4xl mb-3">📭</p>
+            <p className="text-sm">Noch keine Analysen. Analysiere Code im Workspace um den Verlauf zu füllen.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {history.entries.map((entry) => (
+              <div key={entry.id} className="rounded-xl border bg-white p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium bg-gray-100 px-2 py-0.5 rounded">{entry.language}</span>
+                    <span className="text-xs bg-gray-100 px-2 py-0.5 rounded">{entry.provider}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-gray-400">
+                      {new Date(entry.created_at).toLocaleString('de-DE')}
+                    </span>
+                    <DeleteEntryButton entryId={entry.id} />
+                  </div>
+                </div>
+
+                <pre className="text-xs bg-gray-50 rounded p-3 overflow-hidden max-h-32 font-mono mb-3">
+                  {entry.code_snippet}
+                </pre>
+
+                <p className="text-sm text-gray-600 line-clamp-2">
+                  {(entry.analysis_result?.diagnosis as string) ||
+                   (entry.analysis_result?.feedback as string) ||
+                   (entry.analysis_result?.detectedIssue as string) ||
+                   "Analyse gespeichert"}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {history.total > 20 ? <HistoryPagination total={history.total} /> : null}
     </div>
   );
 }

@@ -1,11 +1,13 @@
 import { cookies } from "next/headers";
 import { ProfileForm } from "@/components/profile/ProfileForm";
-import { getProfile } from "@/lib/api";
+import { LlmProviderToggle } from "@/components/settings/LlmProviderToggle";
+import { getLlmProviderStatus, getProfile } from "@/lib/api";
 
 export default async function SettingsPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get("sb-access-token")?.value ?? "";
   const profile = token ? await getProfile(token) : null;
+  const status = await getLlmProviderStatus();
 
   return (
     <div className="flex flex-1 flex-col">
@@ -15,6 +17,11 @@ export default async function SettingsPage() {
         <p className="text-sm text-muted-foreground">Lernprofil anpassen und Präferenzen verwalten.</p>
       </header>
       <main className="flex-1 p-4 sm:p-6">
+        <LlmProviderToggle
+          initialProvider={status.provider}
+          initialOllamaOnline={status.ollama_online}
+        />
+        <div className="mb-6" />
         <ProfileForm mode="settings" initial={profile as any} />
       </main>
     </div>

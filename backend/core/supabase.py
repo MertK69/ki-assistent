@@ -11,6 +11,10 @@ def get_admin_client() -> Client:
     return create_client(settings.SUPABASE_URL, settings.SUPABASE_SERVICE_ROLE_KEY)
 
 
+def get_supabase_client() -> Client:
+    return get_admin_client()
+
+
 async def verify_jwt(token: str) -> Optional[str]:
     """Verify access token and return user_id or None."""
     if not settings.supabase_configured:

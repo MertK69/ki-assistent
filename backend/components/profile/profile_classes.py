@@ -1,5 +1,5 @@
-from typing import Literal, List
-from pydantic import BaseModel
+from typing import Literal, List, Optional
+from pydantic import BaseModel, validator
 
 
 FocusLanguage = Literal["java", "python", "javascript", "assembly"]
@@ -15,6 +15,7 @@ class QualificationProfile(BaseModel):
     goal_tags: List[str]
     goals_free_text: str
     onboarding_completed: bool
+    llm_provider: str = "openai"
     updated_at: str
 
 
@@ -26,3 +27,12 @@ class ProfileUpsertRequest(BaseModel):
     goal_tags: List[str] = []
     goals_free_text: str = ""
     onboarding_completed: bool = True
+    llm_provider: Optional[str] = None
+
+    @validator('llm_provider')
+    def validate_provider(cls, v):
+        if v is None:
+            return v
+        if v not in ('openai', 'ollama'):
+            raise ValueError('llm_provider must be openai or ollama')
+        return v

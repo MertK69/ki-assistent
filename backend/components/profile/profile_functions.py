@@ -20,3 +20,13 @@ async def get_current_user_id(request: Request) -> str:
     if not user_id:
         raise HTTPException(status_code=401, detail="Ungültige Session.")
     return user_id
+
+
+async def get_current_user(request: Request):
+    user_id = await get_current_user_id(request)
+
+    class CurrentUser:
+        def __init__(self, id: str):
+            self.id = id
+
+    return CurrentUser(user_id)

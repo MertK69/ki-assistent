@@ -85,7 +85,8 @@ async def analyze_didactically(
     profile: Optional[QualificationProfile],
 ) -> Optional[AnalysisResult]:
     user_prompt = _build_user_prompt(payload, profile)
-    raw_content = await call_llm(DIDACTIC_SYSTEM_PROMPT, user_prompt)
+    provider = profile.llm_provider if profile else "openai"
+    raw_content = await call_llm(DIDACTIC_SYSTEM_PROMPT, user_prompt, provider)
     if not isinstance(raw_content, str):
         return None
     try:
